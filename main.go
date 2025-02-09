@@ -30,12 +30,6 @@ func main() {
 	// TODO: usecase層へ移動
 	// SQL実行のリポジトリを生成する
 	hotelRepo := infrastructure.NewMySQLHotelRepository(db)
-	hotel, err := hotelRepo.HotelGetById(1)
-	if err != nil {
-		panic(err)
-	} else {
-		fmt.Println(hotel)
-	}
 
 	insertHotel := entity.NewHotel(2, "secondHotel", 20000, 5)
 	err = hotelRepo.HotelSave(*insertHotel)
@@ -43,10 +37,16 @@ func main() {
 		panic(err)
 	}
 
-	secondHotel, err := hotelRepo.HotelGetById(2)
+	secandHotel, err := hotelRepo.HotelGetById(2)
 	if err != nil {
 		panic(err)
 	} else {
-		fmt.Println(secondHotel)
+		fmt.Println(secandHotel)
 	}
+
+	err = hotelRepo.HotelDelete(2)
+	if err != nil {
+		panic(err)
+	}
+
 }

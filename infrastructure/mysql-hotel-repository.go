@@ -33,3 +33,8 @@ func (r *MySQLHotelRepository) HotelSave(hotel entity.Hotel) error {
 	)
 	return err
 }
+
+func (r *MySQLHotelRepository) HotelDelete(id int) error {
+	_, err := r.db.Exec("DELETE FROM hotels WHERE id=?", id)
+	return err
+}
