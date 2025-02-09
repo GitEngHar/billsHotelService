@@ -27,7 +27,6 @@ func main() {
 		panic(err)
 	}
 
-	// TODO: あとで infraへ移動する
 	// リポジトリを生成する
 	hotelRepo := infrastructure.NewMySQLHotelRepository(db)
 	hotel, err := hotelRepo.HotelGetById(1)
