@@ -26,4 +26,15 @@ func (r *MySQLHotelRepository) HotelGetById(id int) (*entity.Hotel, error) {
 	return hotel, nil
 }
 
-//func (r *MySQLHotelRepository) HotelInsert(hotel entity.Hotel) {}
+func (r *MySQLHotelRepository) HotelSave(hotel entity.Hotel) error {
+	_, err := r.db.Exec(
+		"INSERT INTO hotels (id,name,price_perNight,rooms_available) VALUES(?,?,?,?)",
+		hotel.ID, hotel.Name, hotel.PricePerNight, hotel.RoomsAvailable,
+	)
+	return err
+}
+
+func (r *MySQLHotelRepository) HotelDelete(id int) error {
+	_, err := r.db.Exec("DELETE FROM hotels WHERE id=?", id)
+	return err
+}
