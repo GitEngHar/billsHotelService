@@ -1,7 +1,7 @@
 package main
 
 import (
-	"billsHotelService/domain/repository"
+	"billsHotelService/infrastructure"
 	"database/sql"
 	"fmt"
 	_ "github.com/go-sql-driver/mysql"
@@ -27,9 +27,8 @@ func main() {
 		panic(err)
 	}
 
-	// TODO: あとで infraへ移動する
 	// リポジトリを生成する
-	hotelRepo := repository.NewMySQLHotelRepository(db)
+	hotelRepo := infrastructure.NewMySQLHotelRepository(db)
 	hotel, err := hotelRepo.HotelGetById(1)
 	if err != nil {
 		panic(err)
