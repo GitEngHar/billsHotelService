@@ -21,5 +21,5 @@ message Hotel{
 }
 
 message HotelResponse{
-  Hotel hotel = 1;
+  Hotel hotel = 1;//TODO: 設定内容を詳細にする
 }

@@ -2,7 +2,6 @@ package repository
 
 import (
 	"billsHotelService/domain/entity"
-	"billsHotelService/domain/repository"
 	"database/sql"
 )
 
@@ -10,7 +9,8 @@ type MySQLHotelRepository struct {
 	db *sql.DB
 }
 
-func NewMySQLHotelRepository(db *sql.DB) repository.HotelRepository {
+// repository.HotelRepository
+func NewMySQLHotelRepository(db *sql.DB) *MySQLHotelRepository {
 	return &MySQLHotelRepository{db: db}
 }
 

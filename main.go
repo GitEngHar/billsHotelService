@@ -1,4 +1,4 @@
-package main
+package maaain
 
 import (
 	"billsHotelService/domain/entity"
@@ -25,7 +25,7 @@ func main() {
 	if err != nil {
 		panic(err)
 	}
-
+	// CREATE TABLE IF NOT EXISTS hotels (id INT PRIMARY KEY, name VARCHAR(255), price_pernight INT, rooms_available INT);
 	// TODO: usecase層へ移動
 	// SQL実行のリポジトリを生成する
 	hotelRepo := repository.NewMySQLHotelRepository(db)
