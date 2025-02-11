@@ -159,7 +159,7 @@ func (x *Hotel) GetRoomsAvailable() int32 {
 
 type HotelResponse struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	Hotel         *Hotel                 `protobuf:"bytes,1,opt,name=hotel,proto3" json:"hotel,omitempty"` //TODO: 設定内容を詳細にする
+	Hotel         *Hotel                 `protobuf:"bytes,1,opt,name=hotel,proto3" json:"hotel,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
