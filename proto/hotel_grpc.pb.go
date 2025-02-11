@@ -27,7 +27,7 @@ const (
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type HotelServiceClient interface {
-	GetHotel(ctx context.Context, in *HotelRequest, opts ...grpc.CallOption) (*HotelRequest, error)
+	GetHotel(ctx context.Context, in *HotelRequest, opts ...grpc.CallOption) (*HotelResponse, error)
 	CreateHotel(ctx context.Context, in *HotelRequest, opts ...grpc.CallOption) (*HotelResponse, error)
 }
 
@@ -39,9 +39,9 @@ func NewHotelServiceClient(cc grpc.ClientConnInterface) HotelServiceClient {
 	return &hotelServiceClient{cc}
 }
 
-func (c *hotelServiceClient) GetHotel(ctx context.Context, in *HotelRequest, opts ...grpc.CallOption) (*HotelRequest, error) {
+func (c *hotelServiceClient) GetHotel(ctx context.Context, in *HotelRequest, opts ...grpc.CallOption) (*HotelResponse, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	out := new(HotelRequest)
+	out := new(HotelResponse)
 	err := c.cc.Invoke(ctx, HotelService_GetHotel_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
@@ -63,7 +63,7 @@ func (c *hotelServiceClient) CreateHotel(ctx context.Context, in *HotelRequest, 
 // All implementations must embed UnimplementedHotelServiceServer
 // for forward compatibility.
 type HotelServiceServer interface {
-	GetHotel(context.Context, *HotelRequest) (*HotelRequest, error)
+	GetHotel(context.Context, *HotelRequest) (*HotelResponse, error)
 	CreateHotel(context.Context, *HotelRequest) (*HotelResponse, error)
 	mustEmbedUnimplementedHotelServiceServer()
 }
@@ -75,7 +75,7 @@ type HotelServiceServer interface {
 // pointer dereference when methods are called.
 type UnimplementedHotelServiceServer struct{}
 
-func (UnimplementedHotelServiceServer) GetHotel(context.Context, *HotelRequest) (*HotelRequest, error) {
+func (UnimplementedHotelServiceServer) GetHotel(context.Context, *HotelRequest) (*HotelResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetHotel not implemented")
 }
 func (UnimplementedHotelServiceServer) CreateHotel(context.Context, *HotelRequest) (*HotelResponse, error) {
