@@ -1,35 +1,34 @@
-package main
+package maaain
 
 import (
 	"billsHotelService/domain/entity"
-	"billsHotelService/infrastructure"
-	"database/sql"
+	"billsHotelService/infrastructure/database"
+	"billsHotelService/server/repository"
 	"fmt"
 	_ "github.com/go-sql-driver/mysql"
 )
 
 func main() {
-	dsn := "root:password@tcp(localhost:3306)/hotel_db"
-	db, err := sql.Open("mysql", dsn)
+	db, err := database.NewMySQL()
 	if err != nil {
 		panic(err)
 	}
 	defer db.Close()
 	// テーブル作成
 	createTableSQL := `CREATE TABLE IF NOT EXISTS hotels (
-        id INT PRIMARY KEY,
-        name VARCHAR(255),
-        price_pernight INT,
-    	rooms_available INT);`
+	   id INT PRIMARY KEY,
+	   name VARCHAR(255),
+	   price_pernight INT,
+		rooms_available INT);`
 	// TODO: usecase層へ移動
 	_, err = db.Exec(createTableSQL)
 	if err != nil {
 		panic(err)
 	}
-
+	// CREATE TABLE IF NOT EXISTS hotels (id INT PRIMARY KEY, name VARCHAR(255), price_pernight INT, rooms_available INT);
 	// TODO: usecase層へ移動
 	// SQL実行のリポジトリを生成する
-	hotelRepo := infrastructure.NewMySQLHotelRepository(db)
+	hotelRepo := repository.NewMySQLHotelRepository(db)
 
 	insertHotel := entity.NewHotel(2, "secondHotel", 20000, 5)
 	err = hotelRepo.HotelSave(*insertHotel)
