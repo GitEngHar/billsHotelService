@@ -12,7 +12,7 @@ import (
 )
 
 type HotelServiceServer struct {
-	proto.UnimplementedHotelServiceServer //TODO: 設定内容を詳細にする
+	proto.UnimplementedHotelServiceServer //grpc で構築していないメソッドの実装を許容する
 	repo                                  *repository.MySQLHotelRepository
 }
 
@@ -54,7 +54,7 @@ func (s *HotelServiceServer) CreateHotel(ctx context.Context, req *proto.HotelRe
 func main() {
 	db, err := database.NewMySQL()
 	if err != nil {
-		log.Fatalf("Failed to connect to DB: %v", err) //TODO: 設定内容を詳細にする
+		log.Fatalf("Failed to connect to DB: %v", err) //ログの出力
 	}
 	defer db.Close()
 
