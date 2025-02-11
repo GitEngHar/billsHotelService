@@ -20,7 +20,7 @@ func NewHotelServiceServer(repo *repository.MySQLHotelRepository) *HotelServiceS
 	return &HotelServiceServer{repo: repo}
 }
 
-func (s *HotelServiceServer) GetHotelById(ctx context.Context, req *proto.HotelRequest) (*proto.HotelResponse, error) {
+func (s *HotelServiceServer) GetHotel(ctx context.Context, req *proto.HotelRequest) (*proto.HotelResponse, error) {
 	hotel, err := s.repo.HotelGetById(int(req.GetId()))
 	if err != nil {
 		return nil, err
@@ -35,13 +35,20 @@ func (s *HotelServiceServer) GetHotelById(ctx context.Context, req *proto.HotelR
 	}, nil
 }
 
-func (s *HotelServiceServer) SaveHotel(ctx context.Context, req *proto.Hotel) (*proto.HotelResponse, error) {
+func (s *HotelServiceServer) CreateHotel(ctx context.Context, req *proto.HotelRequest) (*proto.HotelResponse, error) {
 	newHotel := entity.NewHotel(int(req.GetId()), req.GetName(), int(req.GetPricePernight()), int(req.GetRoomsAvailable()))
 	err := s.repo.HotelSave(*newHotel)
 	if err != nil {
 		return nil, err
 	}
-	return &proto.HotelResponse{Hotel: req}, nil
+	return &proto.HotelResponse{
+		Hotel: &proto.Hotel{
+			Id:             int32(newHotel.ID),
+			Name:           newHotel.Name,
+			PricePernight:  int32(newHotel.PricePerNight),
+			RoomsAvailable: int32(newHotel.RoomsAvailable),
+		},
+	}, nil
 }
 
 func main() {
