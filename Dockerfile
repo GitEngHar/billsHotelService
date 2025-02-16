@@ -15,8 +15,6 @@ WORKDIR /app/server
 #RUN GOOS=linux GOARCH=amd64 go build -o server .
 RUN go build -o server .
 
-RUN chmod 777 /app/server
-
 # 軽量な実行環境
 FROM golang:1.23 AS final
 

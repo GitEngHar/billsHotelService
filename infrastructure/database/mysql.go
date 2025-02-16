@@ -10,7 +10,7 @@ import (
 const (
 	dbUser     = "root"
 	dbPassword = "password"
-	dbHost     = "127.0.0.1"
+	dbHost     = "hotel-db"
 	dbPort     = "3306"
 	dbName     = "hotel_db"
 )
