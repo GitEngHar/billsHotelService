@@ -6,6 +6,7 @@ option go_package = "billsHotelService/proto/hotel";
 
 service HotelService{
   rpc GetHotel (HotelRequest) returns (HotelResponse);
+  rpc UpdateHotel (HotelRequest) returns (HotelResponse);
   rpc CreateHotel (HotelRequest) returns (HotelResponse);
 }
 
