@@ -2,6 +2,7 @@ package main
 
 import (
 	"billsHotelService/domain/entity"
+	domainrep "billsHotelService/domain/repository"
 	"billsHotelService/infrastructure/database"
 	"billsHotelService/proto"
 	"billsHotelService/server/repository"
@@ -13,10 +14,10 @@ import (
 
 type HotelServiceServer struct {
 	proto.UnimplementedHotelServiceServer //grpc で構築していないメソッドの実装を許容する
-	repo                                  *repository.MySQLHotelRepository
+	repo                                  domainrep.HotelRepository
 }
 
-func NewHotelServiceServer(repo *repository.MySQLHotelRepository) *HotelServiceServer {
+func NewHotelServiceServer(repo domainrep.HotelRepository) *HotelServiceServer {
 	return &HotelServiceServer{repo: repo}
 }
 
@@ -38,6 +39,22 @@ func (s *HotelServiceServer) GetHotel(ctx context.Context, req *proto.HotelReque
 func (s *HotelServiceServer) CreateHotel(ctx context.Context, req *proto.HotelRequest) (*proto.HotelResponse, error) {
 	newHotel := entity.NewHotel(int(req.GetId()), req.GetName(), int(req.GetPricePernight()), int(req.GetRoomsAvailable()))
 	err := s.repo.HotelSave(*newHotel)
+	if err != nil {
+		return nil, err
+	}
+	return &proto.HotelResponse{
+		Hotel: &proto.Hotel{
+			Id:             int32(newHotel.ID),
+			Name:           newHotel.Name,
+			PricePernight:  int32(newHotel.PricePerNight),
+			RoomsAvailable: int32(newHotel.RoomsAvailable),
+		},
+	}, nil
+}
+
+func (s *HotelServiceServer) UpdateHotel(ctx context.Context, req *proto.HotelRequest) (*proto.HotelResponse, error) {
+	newHotel := entity.NewHotel(int(req.GetId()), req.GetName(), int(req.GetPricePernight()), int(req.GetRoomsAvailable()))
+	err := s.repo.HotelUpdateById(*newHotel)
 	if err != nil {
 		return nil, err
 	}

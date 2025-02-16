@@ -20,6 +20,7 @@ const _ = grpc.SupportPackageIsVersion9
 
 const (
 	HotelService_GetHotel_FullMethodName    = "/hotel.HotelService/GetHotel"
+	HotelService_UpdateHotel_FullMethodName = "/hotel.HotelService/UpdateHotel"
 	HotelService_CreateHotel_FullMethodName = "/hotel.HotelService/CreateHotel"
 )
 
@@ -28,6 +29,7 @@ const (
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type HotelServiceClient interface {
 	GetHotel(ctx context.Context, in *HotelRequest, opts ...grpc.CallOption) (*HotelResponse, error)
+	UpdateHotel(ctx context.Context, in *HotelRequest, opts ...grpc.CallOption) (*HotelResponse, error)
 	CreateHotel(ctx context.Context, in *HotelRequest, opts ...grpc.CallOption) (*HotelResponse, error)
 }
 
@@ -49,6 +51,16 @@ func (c *hotelServiceClient) GetHotel(ctx context.Context, in *HotelRequest, opt
 	return out, nil
 }
 
+func (c *hotelServiceClient) UpdateHotel(ctx context.Context, in *HotelRequest, opts ...grpc.CallOption) (*HotelResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(HotelResponse)
+	err := c.cc.Invoke(ctx, HotelService_UpdateHotel_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 func (c *hotelServiceClient) CreateHotel(ctx context.Context, in *HotelRequest, opts ...grpc.CallOption) (*HotelResponse, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
 	out := new(HotelResponse)
@@ -64,6 +76,7 @@ func (c *hotelServiceClient) CreateHotel(ctx context.Context, in *HotelRequest, 
 // for forward compatibility.
 type HotelServiceServer interface {
 	GetHotel(context.Context, *HotelRequest) (*HotelResponse, error)
+	UpdateHotel(context.Context, *HotelRequest) (*HotelResponse, error)
 	CreateHotel(context.Context, *HotelRequest) (*HotelResponse, error)
 	mustEmbedUnimplementedHotelServiceServer()
 }
@@ -77,6 +90,9 @@ type UnimplementedHotelServiceServer struct{}
 
 func (UnimplementedHotelServiceServer) GetHotel(context.Context, *HotelRequest) (*HotelResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetHotel not implemented")
+}
+func (UnimplementedHotelServiceServer) UpdateHotel(context.Context, *HotelRequest) (*HotelResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method UpdateHotel not implemented")
 }
 func (UnimplementedHotelServiceServer) CreateHotel(context.Context, *HotelRequest) (*HotelResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method CreateHotel not implemented")
@@ -120,6 +136,24 @@ func _HotelService_GetHotel_Handler(srv interface{}, ctx context.Context, dec fu
 	return interceptor(ctx, in, info, handler)
 }
 
+func _HotelService_UpdateHotel_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(HotelRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(HotelServiceServer).UpdateHotel(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: HotelService_UpdateHotel_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(HotelServiceServer).UpdateHotel(ctx, req.(*HotelRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 func _HotelService_CreateHotel_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(HotelRequest)
 	if err := dec(in); err != nil {
@@ -148,6 +182,10 @@ var HotelService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "GetHotel",
 			Handler:    _HotelService_GetHotel_Handler,
+		},
+		{
+			MethodName: "UpdateHotel",
+			Handler:    _HotelService_UpdateHotel_Handler,
 		},
 		{
 			MethodName: "CreateHotel",

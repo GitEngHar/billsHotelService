@@ -2,6 +2,7 @@ package repository
 
 import (
 	"billsHotelService/domain/entity"
+	"billsHotelService/domain/repository"
 	"database/sql"
 )
 
@@ -10,7 +11,7 @@ type MySQLHotelRepository struct {
 }
 
 // repository.HotelRepository
-func NewMySQLHotelRepository(db *sql.DB) *MySQLHotelRepository {
+func NewMySQLHotelRepository(db *sql.DB) repository.HotelRepository {
 	return &MySQLHotelRepository{db: db}
 }
 
@@ -30,6 +31,14 @@ func (r *MySQLHotelRepository) HotelSave(hotel entity.Hotel) error {
 	_, err := r.db.Exec(
 		"INSERT INTO hotels (id,name,price_perNight,rooms_available) VALUES(?,?,?,?)",
 		hotel.ID, hotel.Name, hotel.PricePerNight, hotel.RoomsAvailable,
+	)
+	return err
+}
+
+func (r *MySQLHotelRepository) HotelUpdateById(hotel entity.Hotel) error {
+	_, err := r.db.Exec(
+		"UPDATE hotels SET name=?, price_perNight=?, rooms_available=? WHERE id=?",
+		hotel.Name, hotel.PricePerNight, hotel.RoomsAvailable, hotel.ID,
 	)
 	return err
 }
